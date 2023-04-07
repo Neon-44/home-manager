@@ -391,6 +391,16 @@ in
         the known hosts file.
       '';
     };
+    
+    userConfigFile = mkOption {
+      type = types.str;
+      default = .ssh/config;
+      description = ''
+      where in your home directory.
+      example: .ssh/config puts it into ~/.ssh/config
+      .config/ssh/config will put it into 
+      '';
+    };
 
     userKnownHostsFile = mkOption {
       type = types.str;
@@ -510,7 +520,7 @@ in
       }
     ];
 
-    home.file.".ssh/config".text =
+    home.file.${userConfigFile}.text =
       let
         sortedMatchBlocks = hm.dag.topoSort cfg.matchBlocks;
         sortedMatchBlocksStr = builtins.toJSON sortedMatchBlocks;
